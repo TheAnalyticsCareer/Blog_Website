@@ -28,34 +28,7 @@ app.use(cors());
 app.use(express.json());
 app.use(limiter);
 
-// // Manual trigger endpoint
-// app.post('/generate-blog', async (req, res) => {
-//     try {
-//         const blog = await blogGenerator.generateAndStoreBlog();
-//         res.json({
-//             success: true,
-//             message: 'Blog generated successfully',
-//             blogId: blog.id,
-//             title: blog.title
-//         });
-//     } catch (error) {
-//         res.status(500).json({
-//             success: false,
-//             message: 'Blog generation failed',
-//             error: error.message
-//         });
-//     }
-// });
 
-// // Get latest blogs
-// app.get('/blogs', async (req, res) => {
-//     try {
-//         const [blogs] = await db.execute('SELECT id, title, generated_at FROM generated_blogs ORDER BY generated_at DESC LIMIT 10');
-//         res.json(blogs);
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });
 
 // ---------------gemini blog generation--------------------------
 
@@ -258,6 +231,6 @@ app.get("/api/news/:topic", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  // This will initialize the scheduler when the server starts
+ 
   blogGenerator.initializeScheduler();
 });
