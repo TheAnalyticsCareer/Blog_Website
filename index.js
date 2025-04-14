@@ -1,6 +1,7 @@
 const express = require("express");
 const blogGenerator = require("./blogGenerator");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const cors = require("cors");
 
 
 const pool = require("./db");
@@ -14,7 +15,6 @@ const cron = require("node-cron");
 const app = express();
 // const PORT =  3000;
 const PORT = process.env.PORT || 3000;
-const cors = require("cors");
 
 // Cache for 5 minutes (300 seconds)
 const cache = new NodeCache({ stdTTL: 300 });
@@ -25,7 +25,22 @@ const limiter = rateLimit({
   max: 100,
 });
 
-app.use(cors());
+
+// -----------------------------------------------------
+
+
+const allowedOrigins = [
+  'https://analytics-career-tech-blog.netlify.app',
+  
+];
+
+app.use(cors({
+  origin: allowedOrigins
+}));
+
+
+// ----------------------------------------------------------------
+
 app.use(express.json());
 app.use(limiter);
 
