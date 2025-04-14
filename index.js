@@ -28,14 +28,8 @@ const limiter = rateLimit({
 
 // -----------------------------------------------------
 
-
-const allowedOrigins = [
-  'https://analytics-career-tech-blog.netlify.app',
-  
-];
-
 app.use(cors({
-  origin: allowedOrigins
+  origin: 'https://analytics-career-tech-blog.netlify.app' 
 }));
 
 
@@ -228,8 +222,9 @@ app.get("/api/news/:topic", async (req, res) => {
 
     // Cache the results
     cache.set(cacheKey, articles);
-
+  
     res.json(articles);
+
   } catch (error) {
     console.error("News fetch error:", error);
 
@@ -248,6 +243,7 @@ app.get("/api/news/:topic", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  
  
   blogGenerator.initializeScheduler();
 });
