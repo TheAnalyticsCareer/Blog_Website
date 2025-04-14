@@ -2,6 +2,7 @@ const express = require("express");
 const blogGenerator = require("./blogGenerator");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
+
 const pool = require("./db");
 
 require("dotenv").config();
@@ -123,6 +124,7 @@ app.get("/generate-blog", async (req, res) => {
 
 //---------------------------- API endpoint to get all blogs--------------------------
 app.get("/blogs", async (req, res) => {
+  console.log("request from live---")
   try {
     const [rows] = await pool.query(
       "SELECT * FROM blogs ORDER BY created_at DESC"
