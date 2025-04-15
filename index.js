@@ -29,7 +29,7 @@ const limiter = rateLimit({
 // -----------------------------------------------------
 
 app.use(cors({
-  origin: 'https://blog-website-ui.vercel.app/',
+  origin: 'blog-website-ui.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
