@@ -216,14 +216,32 @@ app.get("/api/news/:topic", async (req, res) => {
     }
 
     // Filter and format response
-    const articles = response.data.articles.map((article) => ({
-      title: article.title,
-      description: article.description,
-      url: article.url,
-      imageUrl: article.urlToImage,
-      publishedAt: article.publishedAt,
-      source: article.source?.name,
-    }));
+
+    
+    const EXCLUDED_KEYWORDS = ['sex', 'adult']; 
+
+    // Filter and format response
+    const articles = response.data.articles
+      .filter(article => {
+        // Skip if no title
+        if (!article.title) return false;
+        
+        // Check if title contains any excluded keywords
+        const lowerTitle = article.title.toLowerCase();
+        return !EXCLUDED_KEYWORDS.some(keyword => 
+          lowerTitle.includes(keyword.toLowerCase())
+        );
+      })
+      .map(article => ({
+        title: article.title,
+        description: article.description,
+        url: article.url,
+        imageUrl: article.urlToImage,
+        publishedAt: article.publishedAt,
+        source: article.source?.name,
+      }));
+
+
 
     // Cache the results
     cache.set(cacheKey, articles);
@@ -248,12 +266,6 @@ app.get("/api/news/:topic", async (req, res) => {
 
 
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://analytics-career-tech-blog.netlify.app');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
 
 
 
