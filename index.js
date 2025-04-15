@@ -28,13 +28,14 @@ const limiter = rateLimit({
 
 // -----------------------------------------------------
 
-app.use(cors({
-  origin: 'blog-website-ui.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
+// app.use(cors({
+//   origin: 'blog-website-ui.vercel.app',
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true
+// }));
 
 
+app.use(cors())
 
 
 // ----------------------------------------------------------------
