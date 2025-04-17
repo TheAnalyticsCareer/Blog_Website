@@ -103,7 +103,7 @@ async function saveBlogToDB(title, content) {
 
 //--------------- Scheduled job to generate and save blog every 2 days-------------------
 cron.schedule(
-  "0 0 */2 * * ",
+  "*/30 * * * * ",
 
   async () => {
     console.log("Running scheduled blog generation...");
