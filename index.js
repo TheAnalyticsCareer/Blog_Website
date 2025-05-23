@@ -3,7 +3,6 @@ const blogGenerator = require("./blogGenerator");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const cors = require("cors");
 
-
 const pool = require("./db");
 
 require("dotenv").config();
@@ -25,25 +24,14 @@ const limiter = rateLimit({
   max: 100,
 });
 
-
 // -----------------------------------------------------
 
-// app.use(cors({
-//   origin: 'blog-website-ui.vercel.app',
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true
-// }));
-
-
-app.use(cors())
-
+app.use(cors());
 
 // ----------------------------------------------------------------
 
 app.use(express.json());
 app.use(limiter);
-
-
 
 // ---------------gemini blog generation--------------------------
 
@@ -138,7 +126,7 @@ app.get("/generate-blog", async (req, res) => {
 
 //---------------------------- API endpoint to get all blogs--------------------------
 app.get("/blogs", async (req, res) => {
-  console.log("request from live---")
+  console.log("request from live---");
   try {
     const [rows] = await pool.query(
       "SELECT * FROM blogs ORDER BY created_at DESC"
@@ -217,22 +205,21 @@ app.get("/api/news/:topic", async (req, res) => {
 
     // Filter and format response
 
-    
-    const EXCLUDED_KEYWORDS = ['sex', 'adult']; 
+    const EXCLUDED_KEYWORDS = ["sex", "adult"];
 
     // Filter and format response
     const articles = response.data.articles
-      .filter(article => {
+      .filter((article) => {
         // Skip if no title
         if (!article.title) return false;
-        
+
         // Check if title contains any excluded keywords
         const lowerTitle = article.title.toLowerCase();
-        return !EXCLUDED_KEYWORDS.some(keyword => 
+        return !EXCLUDED_KEYWORDS.some((keyword) =>
           lowerTitle.includes(keyword.toLowerCase())
         );
       })
-      .map(article => ({
+      .map((article) => ({
         title: article.title,
         description: article.description,
         url: article.url,
@@ -241,13 +228,10 @@ app.get("/api/news/:topic", async (req, res) => {
         source: article.source?.name,
       }));
 
-
-
     // Cache the results
     cache.set(cacheKey, articles);
-  
-    res.json(articles);
 
+    res.json(articles);
   } catch (error) {
     console.error("News fetch error:", error);
 
@@ -264,14 +248,8 @@ app.get("/api/news/:topic", async (req, res) => {
   }
 });
 
-
-
-
-
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  
- 
+
   blogGenerator.initializeScheduler();
 });
